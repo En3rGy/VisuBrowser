@@ -12,31 +12,14 @@ ApplicationWindow {
     title: qsTr("VisuBrowser")
     visibility: "FullScreen"
 
-    Component.onCompleted: {
-        console.log('System started...')
-        systemStartTimer.start()
-    }
-
-
-    Timer {
-        id: systemStartTimer
-        repeat: false
-        interval: 1000
-        onTriggered: signal_sendStatus( "<ServerRunning>1</ServerRunning>", configPage.sStatusReceiverAddr, configPage.nStatusReceiverPort )
-    }
-
     function slot_resume() {
         console.log('System resumed')
-        signal_sendStatus( "<ServerRunning>1</ServerRunning>", configPage.sStatusReceiverAddr, configPage.nStatusReceiverPort )
         browser.url = configPage.sUrl
     }
 
     function slot_suspend() {
         console.log('System going to suspend')
-        signal_sendStatus( "<ServerRunning>0</ServerRunning>", configPage.sStatusReceiverAddr, configPage.nStatusReceiverPort )
     }  // slot
-
-    signal signal_sendStatus( string sStatus, string sAddr, int nPort )
 
     signal signal_quitApp()
 
@@ -59,17 +42,21 @@ ApplicationWindow {
             url: configPage.sUrl
             zoomFactor: configPage.webPageZoomVal
             onLoadingChanged: {
-                if (loadRequest.status === WebEngineView.LoadStartedStatus)
+                if (loadRequest.status === WebEngineView.LoadStartedStatus) {
                     console.log("Loading started...");
+                    buisyInd.running = true
+                }
 
                 if (loadRequest.status === WebEngineView.LoadFailedStatus) {
                     console.log("Load failed! Error code: " + loadRequest.errorCode);
                     retryTimer.interval = configPage.reloadTimeout
                     retryTimer.start()
+                    buisyInd.running = false
                 }
 
                 if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                     console.log("Page loaded!");
+                    buisyInd.running = false
 
                     findText("Timeout !!", WebEngineView.FindCaseSensitively, function(success) {
                         if (success) {
@@ -77,9 +64,24 @@ ApplicationWindow {
                             console.log("HS visu timeout");
                         }
                     });
+                    findText("User kidnapped !!", WebEngineView.FindCaseSensitively, function(success) {
+                        if (success) {
+                            browser.url = configPage.sUrl
+                            console.log("HS user kidnapped");
+                        }
+                    });
 
                 }
             }
+
+            BusyIndicator {
+                id: buisyInd
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                running: false
+                z: 1
+            }
+
         }
 
         PageConfig {
@@ -87,7 +89,6 @@ ApplicationWindow {
 
             onCloseApp: {
                 console.log('Closing app...')
-                signal_sendStatus( "<ServerRunning>0</ServerRunning>", configPage.sStatusReceiverAddr, configPage.nStatusReceiverPort )
                 signal_quitApp()
             }
         }
@@ -103,4 +104,3 @@ ApplicationWindow {
         interactive: true
     }
 }
-

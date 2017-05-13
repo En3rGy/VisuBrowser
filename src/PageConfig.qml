@@ -18,6 +18,10 @@ Item {
         anchors.fill: parent
         //anchors.horizontalCenter: parent.horizontalCenter
 
+//        Label {
+//            text: Qt.application.name // prepared for Qt 5.9
+//        }
+
        GroupBox{
            title: qsTr( "Visu" )
             Layout.fillWidth: true
@@ -25,7 +29,7 @@ Item {
             GridLayout {
                 anchors.fill: parent
                 columns: 2
-                rows: 3
+                rows: 4
 
                 Label {
                     text: qsTr( "Visu Url:" );
@@ -82,6 +86,18 @@ Item {
                     value: settings.nReloadTimeout
                     Layout.fillWidth: true
                 }
+
+                Button {
+                    id: reloadBtn
+                    text: qsTr( "Reload" )
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 2
+                    onClicked: {
+                        sUrl = ""
+                        sUrl = urlText.text
+                    }
+                }
+
             } // GridLayout
         } // Frame
 

@@ -21,8 +21,7 @@ CONFIG(release) {
 DESTDIR  = ../bin
 
 SOURCES += main.cpp \
-    systemstatus.cpp \
-    udpmanager.cpp
+    systemstatus.cpp
 
 RESOURCES += qml.qrc
 
@@ -51,5 +50,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    systemstatus.h \
-    udpmanager.h
+    systemstatus.h

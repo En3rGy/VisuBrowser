@@ -3,7 +3,6 @@
 
 #include <QGuiApplication>
 #include <QAbstractNativeEventFilter>
-#include "udpmanager.h"
 
 class CNativeEventFilter;
 
@@ -20,7 +19,6 @@ public:
 
 public slots:
   void slot_timeout( void );
-  void slot_sendStatus(QString p_sStatus, QString p_sAddr, int p_nPort);
   void slot_quit( void );
 
 signals:
@@ -30,7 +28,6 @@ signals:
 private:
   bool                 m_bResumeDetected;
   CNativeEventFilter * m_pNativeEventFilter;
-  CUdpManager          m_grUdpManager;
 };
 
 // ################################################

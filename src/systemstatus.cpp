@@ -52,11 +52,6 @@ void CSystemStatus::slot_timeout()
     m_bResumeDetected = false;
 }
 
-void CSystemStatus::slot_sendStatus(QString p_sStatus, QString p_sAddr, int p_nPort)
-{
-    CUdpManager::sendData( p_sStatus, p_sAddr, p_nPort );
-}
-
 void CSystemStatus::slot_quit()
 {
     this->quit();
