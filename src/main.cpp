@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QGuiApplication::setApplicationName( "VisuBrowser" );
     QGuiApplication::setOrganizationName( "paul-family" );
     QGuiApplication::setOrganizationDomain( "paul-family.de");
-    QGuiApplication::setApplicationVersion( "0.1.0" );
+    QGuiApplication::setApplicationVersion( "0.2.2" );
     QGuiApplication::setApplicationDisplayName( QGuiApplication::applicationName() + " v" + QGuiApplication::applicationVersion() );
 
     QtWebEngine::initialize();

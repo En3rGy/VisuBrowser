@@ -28,6 +28,7 @@ ApplicationWindow {
         repeat: false
         onTriggered: {
             browser.reloadAndBypassCache()
+            retryTimer.stop()
         }
     }
 
@@ -60,13 +61,15 @@ ApplicationWindow {
 
                     findText("Timeout !!", WebEngineView.FindCaseSensitively, function(success) {
                         if (success) {
-                            browser.url = configPage.sUrl
+                            retryTimer.interval = configPage.reloadTimeout
+                            retryTimer.start()
                             console.log("HS visu timeout");
                         }
                     });
                     findText("User kidnapped !!", WebEngineView.FindCaseSensitively, function(success) {
                         if (success) {
-                            browser.url = configPage.sUrl
+                            retryTimer.interval = configPage.reloadTimeout
+                            retryTimer.start()
                             console.log("HS user kidnapped");
                         }
                     });
