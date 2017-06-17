@@ -14,16 +14,18 @@ Item {
 
     signal closeApp()
 
+    signal reloadUrl()
+
     ColumnLayout {
         anchors.fill: parent
-        //anchors.horizontalCenter: parent.horizontalCenter
 
-//        Label {
-//            text: Qt.application.name // prepared for Qt 5.9
-//        }
+        Label {
+            text: Qt.application.displayName
+            Layout.fillWidth: true
+        }
 
-       GroupBox{
-           title: qsTr( "Visu" )
+        GroupBox{
+            title: qsTr( "Visu" )
             Layout.fillWidth: true
 
             GridLayout {
@@ -67,11 +69,11 @@ Item {
                     }
 
                     textFromValue: function(value, locale) {
-                        return Number(value / 100).toLocaleString(locale, 'f', webPageZoom.decimals)
+                        return Number(value / 100).toLocaleString(locale, 'f', webPageZoom.decimals);
                     }
 
                     valueFromText: function(text, locale) {
-                        return Number.fromLocaleString(locale, text) * 100
+                        return Number.fromLocaleString(locale, text) * 100;
                     }
                 } // SpinBox
 
@@ -93,8 +95,7 @@ Item {
                     Layout.fillWidth: true
                     Layout.columnSpan: 2
                     onClicked: {
-                        sUrl = ""
-                        sUrl = urlText.text
+                        reloadUrl();
                     }
                 }
 
@@ -136,17 +137,16 @@ Item {
             } // GridLayout
         } // Item
 
-
         Button {
             id: saveSettings
             text: qsTr( "Save Settings" )
             Layout.fillWidth: true
             onClicked: {
-                settings.webPageZoom  = webPageZoom.value
-                settings.sUrl = urlText.text
-                settings.nStatusReceivePort = statusReceiverPort.value
-                settings.sStatusReceiverUrl = statusReceiverIp.text
-                settings.nReloadTimeout = reloadSpinBox.value
+                settings.webPageZoom  = webPageZoom.value;
+                settings.sUrl = urlText.text;
+                settings.nStatusReceivePort = statusReceiverPort.value;
+                settings.sStatusReceiverUrl = statusReceiverIp.text;
+                settings.nReloadTimeout = reloadSpinBox.value;
             }
         }
 
@@ -155,7 +155,7 @@ Item {
             text: qsTr( "Quit" )
             Layout.fillWidth: true
             onClicked: {
-                closeApp()
+                closeApp();
             }
         }
     } // RowLayout

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QGuiApplication::setApplicationName( "VisuBrowser" );
     QGuiApplication::setOrganizationName( "paul-family" );
     QGuiApplication::setOrganizationDomain( "paul-family.de");
-    QGuiApplication::setApplicationVersion( "0.2.2" );
+    QGuiApplication::setApplicationVersion( "0.3.1" );
     QGuiApplication::setApplicationDisplayName( QGuiApplication::applicationName() + " v" + QGuiApplication::applicationVersion() );
 
     QtWebEngine::initialize();
@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 
     QObject::connect( & app, SIGNAL( signal_systemResume() ), grObjLst.first(), SLOT(slot_resume()));
     QObject::connect( & app, SIGNAL( signal_goingToSuspend() ), grObjLst.first(), SLOT(slot_suspend()));
-    QObject::connect( grObjLst.first(), SIGNAL( signal_sendStatus(QString, QString , int) ), &app, SLOT( slot_sendStatus(QString, QString , int)) );
     QObject::connect( grObjLst.first(), SIGNAL( signal_quitApp() ), &app, SLOT( slot_quit()) );
 
     return app.exec();

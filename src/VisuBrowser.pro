@@ -23,7 +23,8 @@ DESTDIR  = ../bin
 SOURCES += main.cpp \
     systemstatus.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    ressourcen.qrc
 
 win32:DEFINES += win32
 

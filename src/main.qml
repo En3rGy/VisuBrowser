@@ -9,16 +9,16 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("VisuBrowser")
+    title: Qt.application.displayName
     visibility: "FullScreen"
 
     function slot_resume() {
-        console.log('System resumed')
-        browser.url = configPage.sUrl
+        console.log('System resumed');
+        browser.url = configPage.sUrl;
     }
 
     function slot_suspend() {
-        console.log('System going to suspend')
+        console.log('System going to suspend');
     }  // slot
 
     signal signal_quitApp()
@@ -27,8 +27,8 @@ ApplicationWindow {
         id: retryTimer
         repeat: false
         onTriggered: {
-            browser.reloadAndBypassCache()
-            retryTimer.stop()
+            browser.reloadAndBypassCache();
+            retryTimer.stop();
         }
     }
 
@@ -44,35 +44,49 @@ ApplicationWindow {
             zoomFactor: configPage.webPageZoomVal
             onLoadingChanged: {
                 if (loadRequest.status === WebEngineView.LoadStartedStatus) {
-                    console.log("Loading started...");
-                    buisyInd.running = true
+                    console.log("Loading started: ", browser.url );
+                    buisyInd.running = true;
                 }
 
                 if (loadRequest.status === WebEngineView.LoadFailedStatus) {
                     console.log("Load failed! Error code: " + loadRequest.errorCode);
-                    retryTimer.interval = configPage.reloadTimeout
-                    retryTimer.start()
-                    buisyInd.running = false
+                    browser.url = configPage.sUrl;
+                    retryTimer.interval = configPage.reloadTimeout;
+                    retryTimer.start();
+                    buisyInd.running = false;
                 }
 
                 if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                     console.log("Page loaded!");
-                    buisyInd.running = false
+                    buisyInd.running = false;
 
-                    findText("Timeout !!", WebEngineView.FindCaseSensitively, function(success) {
-                        if (success) {
-                            retryTimer.interval = configPage.reloadTimeout
-                            retryTimer.start()
-                            console.log("HS visu timeout");
-                        }
-                    });
-                    findText("User kidnapped !!", WebEngineView.FindCaseSensitively, function(success) {
-                        if (success) {
-                            retryTimer.interval = configPage.reloadTimeout
-                            retryTimer.start()
-                            console.log("HS user kidnapped");
-                        }
-                    });
+                    if ( title === "Error" ) {
+                        console.log("HS error page");
+                        browser.url = configPage.sUrl;
+                        retryTimer.interval = configPage.reloadTimeout;
+                        retryTimer.start();
+                        //browser.url = ":/html/ressources/msg.html";
+                    }
+                    else {
+                        findText("Timeout !!", WebEngineView.FindCaseSensitively, function(success) {
+                            if (success) {
+                                console.log("HS visu timeout");
+                                browser.url = configPage.sUrl;
+                                retryTimer.interval = configPage.reloadTimeout;
+                                retryTimer.start();
+                                //browser.url = ":/html/ressources/msg.html"
+                            }
+                        });
+                        findText("User kidnapped !!", WebEngineView.FindCaseSensitively, function(success) {
+                            if (success) {
+                                console.log("HS user kidnapped");
+                                browser.url = configPage.sUrl;
+                                retryTimer.interval = configPage.reloadTimeout;
+                                retryTimer.start();
+                                //browser.url = ":/html/ressources/msg.html"
+                            }
+                        });
+                    } // else
 
                 }
             }
@@ -93,6 +107,12 @@ ApplicationWindow {
             onCloseApp: {
                 console.log('Closing app...')
                 signal_quitApp()
+            }
+
+            onReloadUrl: {
+                browser.url = configPage.sUrl;
+                retryTimer.interval = 250;
+                retryTimer.start();
             }
         }
 
