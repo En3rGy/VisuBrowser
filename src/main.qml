@@ -65,29 +65,7 @@ ApplicationWindow {
                         browser.url = configPage.sUrl;
                         retryTimer.interval = configPage.reloadTimeout;
                         retryTimer.start();
-                        //browser.url = ":/html/ressources/msg.html";
                     }
-                    else {
-                        findText("Timeout !!", WebEngineView.FindCaseSensitively, function(success) {
-                            if (success) {
-                                console.log("HS visu timeout");
-                                browser.url = configPage.sUrl;
-                                retryTimer.interval = configPage.reloadTimeout;
-                                retryTimer.start();
-                                //browser.url = ":/html/ressources/msg.html"
-                            }
-                        });
-                        findText("User kidnapped !!", WebEngineView.FindCaseSensitively, function(success) {
-                            if (success) {
-                                console.log("HS user kidnapped");
-                                browser.url = configPage.sUrl;
-                                retryTimer.interval = configPage.reloadTimeout;
-                                retryTimer.start();
-                                //browser.url = ":/html/ressources/msg.html"
-                            }
-                        });
-                    } // else
-
                 }
             }
 
