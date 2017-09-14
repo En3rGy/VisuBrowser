@@ -16,6 +16,8 @@ Item {
 
     signal reloadUrl()
 
+    signal minimizeApp()
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -24,7 +26,7 @@ Item {
             Layout.fillWidth: true
         }
 
-        GroupBox{
+        GroupBox {
             title: qsTr( "Visu" )
             Layout.fillWidth: true
 
@@ -100,7 +102,7 @@ Item {
                 }
 
             } // GridLayout
-        } // Frame
+        } // GroupBox
 
         GroupBox{
             title: qsTr( "UDP Status" )
@@ -147,6 +149,15 @@ Item {
                 settings.nStatusReceivePort = statusReceiverPort.value;
                 settings.sStatusReceiverUrl = statusReceiverIp.text;
                 settings.nReloadTimeout = reloadSpinBox.value;
+            }
+        }
+
+        Button {
+            id: minimizeBtn
+            text: qsTr( "Minimize Window" )
+            Layout.fillWidth: true
+            onClicked: {
+                minimizeApp()
             }
         }
 

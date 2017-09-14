@@ -6,6 +6,7 @@ import QtWebEngine 1.1
 import QtQuick.Layouts 1.1
 
 ApplicationWindow {
+    id: mainApp
     visible: true
     width: 640
     height: 480
@@ -22,6 +23,7 @@ ApplicationWindow {
     }  // slot
 
     signal signal_quitApp()
+    signal signal_completed()
 
     Timer{
         id: retryTimer
@@ -92,6 +94,10 @@ ApplicationWindow {
                 retryTimer.interval = 250;
                 retryTimer.start();
             }
+
+            onMinimizeApp: {
+                mainApp.visibility = Window.Minimized
+            }
         }
 
     } // SwipeView
@@ -104,4 +110,6 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         interactive: true
     }
+
+    Component.onCompleted: signal_completed();
 }

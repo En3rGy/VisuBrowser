@@ -7,7 +7,7 @@
 #endif
 
 CSystemStatus::CSystemStatus(  int & p_nArgc , char ** & p_ppArgv )
-    :  QGuiApplication( p_nArgc, p_ppArgv )
+    :  QApplication( p_nArgc, p_ppArgv )
     , m_bResumeDetected( false )
 {
     CNativeEventFilter grFilter( this );

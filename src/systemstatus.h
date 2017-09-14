@@ -1,12 +1,12 @@
 #ifndef SYSTEMSTATUS_H
 #define SYSTEMSTATUS_H
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QAbstractNativeEventFilter>
 
 class CNativeEventFilter;
 
-class CSystemStatus : public QGuiApplication
+class CSystemStatus : public QApplication
 {
     Q_OBJECT
 
