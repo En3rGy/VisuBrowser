@@ -23,7 +23,8 @@ CONFIG(release) {
 DESTDIR  = ../bin
 
 SOURCES += main.cpp \
-    systemstatus.cpp
+    systemstatus.cpp \
+    csplash.cpp
 
 RESOURCES += qml.qrc \
     ressourcen.qrc
@@ -55,4 +56,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    systemstatus.h
+    systemstatus.h \
+    csplash.h

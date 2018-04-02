@@ -4,6 +4,7 @@
 #include <QSplashScreen>
 #include <QPixmap>
 #include "systemstatus.h"
+#include "csplash.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +12,7 @@ int main(int argc, char *argv[])
     CNativeEventFilter grNativeEventFilter( & app );
 
     QPixmap grPixmap("://ressources/AppIcon.png");
-    QSplashScreen grSplash(grPixmap);
+    CSplash grSplash(grPixmap);
     grSplash.show();
     app.processEvents();
 
@@ -28,10 +29,15 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+    QObject::connect( & engine, SIGNAL( objectCreated(QObject*,QUrl)), & grSplash, SLOT( slot_close() ) );
+
     QList< QObject * > grObjLst = engine.rootObjects();
 
+    // to qml
     QObject::connect( & app, SIGNAL( signal_systemResume() ), grObjLst.first(), SLOT(slot_resume()));
     QObject::connect( & app, SIGNAL( signal_goingToSuspend() ), grObjLst.first(), SLOT(slot_suspend()));
+
+    // from qml
     QObject::connect( grObjLst.first(), SIGNAL( signal_quitApp() ), &app, SLOT( slot_quit()) );
     QObject::connect( grObjLst.first(), SIGNAL( signal_completed() ), &grSplash, SLOT( close() ) );
 
