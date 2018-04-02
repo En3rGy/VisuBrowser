@@ -1,6 +1,8 @@
 TEMPLATE = app
 
-QT += qml quick webengine network widgets
+QT += qml quick network widgets
+QT += webengine
+
 CONFIG += c++11
 
 CONFIG(debug, debug|release) {
