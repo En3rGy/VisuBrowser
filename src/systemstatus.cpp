@@ -76,11 +76,7 @@ bool CNativeEventFilter::nativeEventFilter(const QByteArray & p_grEventType, voi
     if ( p_grEventType == "windows_generic_MSG")
     {
         MSG     * pMsg = static_cast< MSG *>    ( p_pMessage );
-        LRESULT * pRes = static_cast< LRESULT *>( p_nResult );
-
-        Q_UNUSED( pRes )
-
-        m_pSystemStatus->winEventFilter( pMsg, pRes );
+        m_pSystemStatus->winEventFilter( pMsg, p_nResult );
     }
     return false;
 }

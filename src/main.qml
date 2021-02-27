@@ -1,11 +1,14 @@
-import QtQml 2.2
-import QtQuick 2.8
-import QtQuick.Window 2.2
-import QtQuick.Controls 2.1
-import QtWebEngine 1.5
+import QtQml 2.12
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
+import QtWebEngine 1.8
 import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.4
+
 
 ApplicationWindow {
+
     id: mainApp
     visible: true
     width: 640

@@ -1,143 +1,109 @@
 import Qt.labs.settings 1.0
-import QtQml 2.2
-import QtQuick 2.8
-import QtQuick.Controls 2.1
+import QtQml 2.12
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.1
-import Qt.labs.settings 1.0
 
-Item {
+GroupBox {
+    title: Qt.application.displayName
+
     property alias  webPageZoomVal : webPageZoom.realValue
     property string sUrl: settings.sUrl
     property alias  reloadTimeout : reloadSpinBox.value
-    property alias  sStatusReceiverAddr : statusReceiverIp.text
-    property alias  nStatusReceiverPort : statusReceiverPort.value
 
     signal closeApp()
-
     signal reloadUrl()
-
     signal minimizeApp()
 
     ColumnLayout {
-        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        Label {
-            text: Qt.application.displayName
-            Layout.fillWidth: true
-        }
-
-        GroupBox {
-            title: qsTr( "Visu" )
+        RowLayout {
             Layout.fillWidth: true
 
-            GridLayout {
-                anchors.fill: parent
-                columns: 2
-                rows: 4
+            GroupBox {
+                id: groupVisu
+                title: qsTr( "Visu" )
+                Layout.fillWidth: true
 
-                Label {
-                    text: qsTr( "Visu Url:" );
-                }
+                Layout.minimumWidth: 200
+                Layout.preferredWidth: 800
 
-                TextField {
-                    id : urlText
-                    Layout.fillWidth: true
-                    placeholderText: "http://www.google.de"
-                    text: settings.sUrl
-                    onEditingFinished: {
-                        sUrl = urlText.text
-                    }
-                }
+                GridLayout {
+                    anchors.fill: parent
+                    columns: 2
+                    rows: 4
 
-                Label {
-                    text: qsTr( "Visu Zoom:" )
-                }
-
-                SpinBox {
-                    id : webPageZoom
-                    Layout.fillWidth: true
-
-                    from: 25
-                    value: settings.webPageZoom
-                    to: 500
-                    stepSize: 5
-
-                    property int decimals: 2
-                    property real realValue: value / 100
-
-                    validator: DoubleValidator {
-                        bottom: Math.min(webPageZoom.from, webPageZoom.to)
-                        top:  Math.max(webPageZoom.from, webPageZoom.to)
+                    Label {
+                        text: qsTr( "Visu Url:" );
                     }
 
-                    textFromValue: function(value, locale) {
-                        return Number(value / 100).toLocaleString(locale, 'f', webPageZoom.decimals);
+                    TextField {
+                        id : urlText
+                        Layout.fillWidth: true
+                        placeholderText: "http://www.google.de"
+                        text: settings.sUrl
+                        onEditingFinished: {
+                            sUrl = urlText.text
+                        }
                     }
 
-                    valueFromText: function(text, locale) {
-                        return Number.fromLocaleString(locale, text) * 100;
+                    Label {
+                        text: qsTr( "Visu Zoom:" )
                     }
-                } // SpinBox
 
-                Label {
-                    text: qsTr( "Visu Reload-Timeout [ms]:" )
-                }
-                SpinBox {
-                    id: reloadSpinBox
-                    from: 200
-                    to: 10000
-                    stepSize: 100
-                    value: settings.nReloadTimeout
-                    Layout.fillWidth: true
-                }
+                    SpinBox {
+                        id : webPageZoom
+                        Layout.fillWidth: true
 
-                Button {
-                    id: reloadBtn
-                    text: qsTr( "Reload" )
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-                    onClicked: {
-                        reloadUrl();
+                        from: 25
+                        value: settings.webPageZoom
+                        to: 500
+                        stepSize: 5
+
+                        property int decimals: 2
+                        property real realValue: value / 100
+
+                        validator: DoubleValidator {
+                            bottom: Math.min(webPageZoom.from, webPageZoom.to)
+                            top:  Math.max(webPageZoom.from, webPageZoom.to)
+                        }
+
+                        textFromValue: function(value, locale) {
+                            return Number(value / 100).toLocaleString(locale, 'f', webPageZoom.decimals);
+                        }
+
+                        valueFromText: function(text, locale) {
+                            return Number.fromLocaleString(locale, text) * 100;
+                        }
+                    } // SpinBox
+
+                    Label {
+                        text: qsTr( "Visu Reload-Timeout [ms]:" )
                     }
-                }
-
-            } // GridLayout
-        } // GroupBox
-
-        GroupBox{
-            title: qsTr( "UDP Status" )
-            Layout.fillWidth: true
-
-            GridLayout {
-                anchors.fill: parent
-                columns: 2
-                rows: 2
-
-                Label {
-                    text: qsTr( "Status Receiver IP:" );
-                }
-
-                TextField {
-                    id : statusReceiverIp
-                    Layout.fillWidth: true
-                    text: settings.sStatusReceiverUrl
-                    onEditingFinished: {
+                    SpinBox {
+                        id: reloadSpinBox
+                        from: 200
+                        to: 10000
+                        stepSize: 100
+                        value: settings.nReloadTimeout
+                        Layout.fillWidth: true
                     }
-                }
 
-                Label {
-                    text: qsTr( "Status Receiver Port:" )
-                }
-                SpinBox {
-                    id: statusReceiverPort
-                    from: 0
-                    to: 10000
-                    stepSize: 1
-                    value: settings.nStatusReceivePort
-                    Layout.fillWidth: true
-                }
-            } // GridLayout
-        } // Item
+                    Button {
+                        id: reloadBtn
+                        text: qsTr( "Reload" )
+                        Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        onClicked: {
+                            reloadUrl();
+                        }
+                    }
+
+                } // GridLayout
+            } // GroupBox
+
+        } // RowLayout
 
         Button {
             id: saveSettings
@@ -161,14 +127,23 @@ Item {
             }
         }
 
+        Item {
+            Layout.fillHeight: true
+        }
+
         Button {
             id: quitApp
             text: qsTr( "Quit" )
             Layout.fillWidth: true
+            //anchors.horizontalCenter: groupVisu.horizontalCenter
             onClicked: {
                 closeApp();
             }
         }
+        Item {
+            Layout.fillHeight: true
+        }
+
     } // RowLayout
 
     Settings {
