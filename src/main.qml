@@ -4,7 +4,8 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtWebEngine 1.8
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.4
+//import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Material 2.12
 
 
 ApplicationWindow {
@@ -16,6 +17,12 @@ ApplicationWindow {
     title: Qt.application.displayName
     visibility: "FullScreen"
 
+    signal signal_quitApp()
+    signal signal_completed()
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
+
     function slot_resume() {
         console.log('System resumed');
         browser.url = configPage.sUrl;
@@ -24,9 +31,6 @@ ApplicationWindow {
     function slot_suspend() {
         console.log('System going to suspend');
     }  // slot
-
-    signal signal_quitApp()
-    signal signal_completed()
 
     Timer{
         id: retryTimer
@@ -93,13 +97,16 @@ ApplicationWindow {
             }
 
             onReloadUrl: {
-                browser.url = configPage.sUrl;
                 retryTimer.interval = 250;
                 retryTimer.start();
             }
 
             onMinimizeApp: {
                 mainApp.visibility = Window.Minimized
+            }
+
+            onShowBrowser: {
+                swipeView.currentIndex = 0
             }
         }
 
@@ -114,5 +121,8 @@ ApplicationWindow {
         interactive: true
     }
 
-    Component.onCompleted: signal_completed();
+    Component.onCompleted: {
+        console.log("QML completed")
+        signal_completed();
+    }
 }

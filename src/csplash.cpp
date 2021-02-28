@@ -1,4 +1,5 @@
 #include "csplash.h"
+#include <QDebug>
 
 CSplash::CSplash(QSplashScreen *parent)
     : QSplashScreen( parent )

@@ -1,6 +1,16 @@
 #include "systemstatus.h"
 #include <iostream>
 #include <QTimer>
+#include <QQuickWindow>
+//#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+//#include <QtWebEngine>
+#include <QSplashScreen>
+#include <QPixmap>
+//#include <QQuickStyle>
+//#include "systemstatus.h"
+#include "csplash.h"
+
 
 #ifdef win32
 #include <windows.h>
@@ -12,6 +22,24 @@ CSystemStatus::CSystemStatus(  int & p_nArgc , char ** & p_ppArgv )
 {
     CNativeEventFilter grFilter( this );
     installNativeEventFilter( & grFilter );
+
+    QPixmap grPixmap("://ressources/AppIcon.png");
+    CSplash grSplash(grPixmap);
+    grSplash.show();
+    this->processEvents();
+
+    m_engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    QList< QObject * > grObjLst = m_engine.rootObjects();
+    m_pWindow = qobject_cast<QQuickWindow *>(grObjLst.first());
+
+    // to qml
+    QObject::connect( this, SIGNAL( signal_systemResume() ), m_pWindow, SLOT(slot_resume()));
+    QObject::connect( this, SIGNAL( signal_goingToSuspend() ), m_pWindow, SLOT(slot_suspend()));
+
+    // from qml
+    QObject::connect( m_pWindow, SIGNAL( signal_quitApp() ), this, SLOT( slot_quit()) );
+    QObject::connect( m_pWindow, SIGNAL( signal_completed() ), &grSplash, SLOT( slot_close() ) );
 }
 
 #ifdef win32

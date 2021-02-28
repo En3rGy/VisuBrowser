@@ -3,7 +3,9 @@
 
 #include <QApplication>
 #include <QAbstractNativeEventFilter>
+#include <QQmlApplicationEngine>
 
+class QQuickWindow;
 class CNativeEventFilter;
 
 class CSystemStatus : public QApplication
@@ -28,6 +30,10 @@ signals:
 private:
   bool                 m_bResumeDetected;
   CNativeEventFilter * m_pNativeEventFilter;
+
+  QQmlApplicationEngine m_engine;
+  QQuickWindow * m_pWindow;
+
 };
 
 // ################################################

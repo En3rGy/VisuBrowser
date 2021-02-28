@@ -8,12 +8,13 @@ GroupBox {
     title: Qt.application.displayName
 
     property alias  webPageZoomVal : webPageZoom.realValue
-    property string sUrl: settings.sUrl
+    property alias sUrl: settings.sUrl
     property alias  reloadTimeout : reloadSpinBox.value
 
     signal closeApp()
     signal reloadUrl()
     signal minimizeApp()
+    signal showBrowser()
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -97,6 +98,7 @@ GroupBox {
                         Layout.columnSpan: 2
                         onClicked: {
                             reloadUrl();
+                            showBrowser();
                         }
                     }
 
