@@ -1,9 +1,9 @@
 TEMPLATE = app
 
 QT += qml quick network widgets quickcontrols2
-QT += webengine
+QT += webenginewidgets webenginequick
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG(debug, debug|release) {
   CONFIG  -= debug release

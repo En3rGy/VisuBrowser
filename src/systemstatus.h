@@ -16,7 +16,7 @@ public:
   CSystemStatus( int &, char ** & );
 
 #ifdef win32
-  bool winEventFilter ( MSG * p_pMsg, long * p_pResult );
+  bool winEventFilter (MSG * p_pMsg, qintptr *p_pResult );
 #endif
 
 public slots:
@@ -44,7 +44,7 @@ class CNativeEventFilter : public QAbstractNativeEventFilter
 {
 public:
     CNativeEventFilter( CSystemStatus * p_pSystemStatus );
-    virtual bool nativeEventFilter(const QByteArray &p_grEventType, void *p_pMessage, long *p_nResult);
+    virtual bool nativeEventFilter(const QByteArray &p_grEventType, void *p_pMessage, qintptr *p_nResult);
 
 private:
     CSystemStatus * m_pSystemStatus;

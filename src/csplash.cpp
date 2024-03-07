@@ -2,8 +2,9 @@
 #include <QDebug>
 
 CSplash::CSplash(QSplashScreen *parent)
-    : QSplashScreen( parent )
+    : QSplashScreen()
 {
+    Q_UNUSED(parent)
 
 }
 

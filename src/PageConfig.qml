@@ -1,4 +1,4 @@
-import Qt.labs.settings 1.0
+import QtCore
 import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.12
@@ -43,9 +43,11 @@ GroupBox {
                         id : urlText
                         Layout.fillWidth: true
                         placeholderText: "http://www.google.de"
-                        text: settings.sUrl
+                        text: sUrl
                         onEditingFinished: {
-                            sUrl = urlText.text
+                            if (sUrl !== urlText.text) {
+                                sUrl = urlText.text
+                            }
                         }
                     }
 

@@ -4,7 +4,6 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtWebEngine 1.8
 import QtQuick.Layouts 1.1
-//import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
 
 
@@ -51,13 +50,13 @@ ApplicationWindow {
             id: browser
             url: configPage.sUrl
             zoomFactor: configPage.webPageZoomVal
-            onLoadingChanged: {
-                if (loadRequest.status === WebEngineView.LoadStartedStatus) {
+            onLoadingChanged: function(loadingInfo){
+                if (loadingInfo.status === WebEngineView.LoadStartedStatus) {
                     console.log("Loading started: ", browser.url );
                     buisyInd.running = true;
                 }
 
-                if (loadRequest.status === WebEngineView.LoadFailedStatus) {
+                if (loadingInfo.status === WebEngineView.LoadFailedStatus) {
                     console.log("Load failed! Error code: " + loadRequest.errorCode);
                     browser.url = configPage.sUrl;
                     retryTimer.interval = configPage.reloadTimeout;
@@ -65,7 +64,7 @@ ApplicationWindow {
                     buisyInd.running = false;
                 }
 
-                if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                if (loadingInfo.status === WebEngineView.LoadSucceededStatus) {
                     console.log("Page loaded!");
                     buisyInd.running = false;
 

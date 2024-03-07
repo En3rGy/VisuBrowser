@@ -43,7 +43,7 @@ CSystemStatus::CSystemStatus(  int & p_nArgc , char ** & p_ppArgv )
 }
 
 #ifdef win32
-bool CSystemStatus::winEventFilter(MSG *p_pMsg, long *p_pResult)
+bool CSystemStatus::winEventFilter(MSG *p_pMsg, qintptr *p_pResult)
 {
     Q_UNUSED( p_pResult )
 
@@ -92,7 +92,7 @@ CNativeEventFilter::CNativeEventFilter(CSystemStatus *p_pSystemStatus)
 
 }
 
-bool CNativeEventFilter::nativeEventFilter(const QByteArray & p_grEventType, void * p_pMessage, long * p_nResult)
+bool CNativeEventFilter::nativeEventFilter(const QByteArray & p_grEventType, void * p_pMessage, qintptr * p_nResult)
 {
 
     //   On Windows, eventType is set to "windows_generic_MSG" for messages sent
