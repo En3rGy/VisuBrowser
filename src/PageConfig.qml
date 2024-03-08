@@ -7,14 +7,29 @@ import QtQuick.Layouts 1.1
 GroupBox {
     title: Qt.application.displayName
 
-    property alias  webPageZoomVal : webPageZoom.realValue
-    property alias sUrl: settings.sUrl
-    property alias  reloadTimeout : reloadSpinBox.value
+    property alias webPageZoomVal : webPageZoom.realValue
+    property alias sUrl: urlText.text
+    property alias reloadTimeout : reloadSpinBox.value
 
     signal closeApp()
     signal reloadUrl()
     signal minimizeApp()
     signal showBrowser()
+
+    Component.onDestruction: {
+        console.log("Saving config.");
+        settings.url = urlText.text
+        settings.reloadVal = reloadSpinBox.value
+        settings.webPageZoomVal = webPageZoom.value
+        settings.sync()
+    }
+
+    Settings {
+        id: settings
+        property string url: "https://www.google.de"
+        property int reloadVal: 2000
+        property int webPageZoomVal: 100
+    }
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -42,13 +57,7 @@ GroupBox {
                     TextField {
                         id : urlText
                         Layout.fillWidth: true
-                        placeholderText: "http://www.google.de"
-                        text: sUrl
-                        onEditingFinished: {
-                            if (sUrl !== urlText.text) {
-                                sUrl = urlText.text
-                            }
-                        }
+                        text: settings.url
                     }
 
                     Label {
@@ -60,24 +69,14 @@ GroupBox {
                         Layout.fillWidth: true
 
                         from: 25
-                        value: settings.webPageZoom
+                        value: settings.webPageZoomVal
                         to: 500
                         stepSize: 5
 
-                        property int decimals: 2
                         property real realValue: value / 100
 
-                        validator: DoubleValidator {
-                            bottom: Math.min(webPageZoom.from, webPageZoom.to)
-                            top:  Math.max(webPageZoom.from, webPageZoom.to)
-                        }
-
-                        textFromValue: function(value, locale) {
-                            return Number(value / 100).toLocaleString(locale, 'f', webPageZoom.decimals);
-                        }
-
-                        valueFromText: function(text, locale) {
-                            return Number.fromLocaleString(locale, text) * 100;
+                        Settings {
+                            property alias value: webPageZoom.value
                         }
                     } // SpinBox
 
@@ -89,7 +88,7 @@ GroupBox {
                         from: 200
                         to: 10000
                         stepSize: 100
-                        value: settings.nReloadTimeout
+                        value: settings.reloadVal
                         Layout.fillWidth: true
                     }
 
@@ -110,19 +109,6 @@ GroupBox {
         } // RowLayout
 
         Button {
-            id: saveSettings
-            text: qsTr( "Save Settings" )
-            Layout.fillWidth: true
-            onClicked: {
-                settings.webPageZoom  = webPageZoom.value;
-                settings.sUrl = urlText.text;
-                settings.nStatusReceivePort = statusReceiverPort.value;
-                settings.sStatusReceiverUrl = statusReceiverIp.text;
-                settings.nReloadTimeout = reloadSpinBox.value;
-            }
-        }
-
-        Button {
             id: minimizeBtn
             text: qsTr( "Minimize Window" )
             Layout.fillWidth: true
@@ -139,7 +125,7 @@ GroupBox {
             id: quitApp
             text: qsTr( "Quit" )
             Layout.fillWidth: true
-            //anchors.horizontalCenter: groupVisu.horizontalCenter
+
             onClicked: {
                 closeApp();
             }
@@ -149,14 +135,4 @@ GroupBox {
         }
 
     } // RowLayout
-
-    Settings {
-        id : settings
-
-        property int webPageZoom : 100
-        property string sUrl : "http://www.google.de"
-        property int nStatusReceivePort : 2001
-        property int nReloadTimeout : 2000
-        property string sStatusReceiverUrl : "192.168.143.11"
-    }
 }
